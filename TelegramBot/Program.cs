@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,8 +11,15 @@ namespace TelegramBot
 	class Program
 	{
 		static TelegramBotClient bot;
+	    private string _key;
 
-		static void Main(string[] args)
+     //   public TestBot(string key)
+	    //{
+	    //    _key = key;
+
+	    //}
+
+        static void Main(string[] args)
 		{
 			
 			bot = new TelegramBotClient("769411125:AAGASD2jpK-_vnG_VSu6RJ8yFMWofdBcCS0");
@@ -26,11 +34,32 @@ namespace TelegramBot
 			bot.StopReceiving();
 		}
 
-		private static void Bot_OnMessageReceived(object sender, Telegram.Bot.Args.MessageEventArgs e)
+		private static async void Bot_OnMessageReceived(object sender, Telegram.Bot.Args.MessageEventArgs e)
 		{
-			var message = e.Message;
+		    StringBuilder msg = new StringBuilder();
+            var message = e.Message;
 
-			Console.WriteLine(message.Text);
-		}
+		    if (message.Text.ToLower() != "привет")
+		    {
+                Console.WriteLine(message.Text);
+
+                msg.AppendLine(
+		            "Я не понимаю того что вы мне написали, мой создатель не наделил меня сверхразумом)");
+		        msg.AppendLine(
+		            "Введите слово привет для начала работы со мной.");
+
+		        await bot.SendTextMessageAsync(message.Chat.Id, msg.ToString());
+		    }
+		    else
+		    {
+
+		        await bot.SendTextMessageAsync(message.Chat.Id, "Ну привет, удиви МЕНЯ!!!");
+
+            }
+
+        }
+
+
+
 	}
 }
