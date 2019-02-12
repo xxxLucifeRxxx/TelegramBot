@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using Telegram.Bot;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBot
 {
@@ -39,23 +40,53 @@ namespace TelegramBot
 		    StringBuilder msg = new StringBuilder();
             var message = e.Message;
 
-		    if (message.Text.ToLower() != "привет")
-		    {
-                Console.WriteLine(message.Text);
+			if (message.Type == Telegram.Bot.Types.Enums.MessageType.Text)
+			{
+				if (message.Text.ToLower() != "привет")
+				{
+					Console.WriteLine(message.Text);
 
-                msg.AppendLine(
-		            "Я не понимаю того что вы мне написали, мой создатель не наделил меня сверхразумом)");
-		        msg.AppendLine(
-		            "Введите слово привет для начала работы со мной.");
+					msg.AppendLine(
+						"Я не понимаю того что вы мне написали, мой создатель не наделил меня сверхразумом)");
+					msg.AppendLine(
+						"Введите слово привет для начала работы со мной.");
 
-		        await bot.SendTextMessageAsync(message.Chat.Id, msg.ToString());
-		    }
-		    else
-		    {
+					await bot.SendTextMessageAsync(message.Chat.Id, msg.ToString());
+				}
+				else
+				{
 
-		        await bot.SendTextMessageAsync(message.Chat.Id, "Ну привет, удиви МЕНЯ!!!");
+					await bot.SendTextMessageAsync(message.Chat.Id, "Ну привет, удиви МЕНЯ!!!(/help)");
 
-            }
+					if(message.Text == "/help")
+					{
+						var keyboard = new InlineKeyboardMarkup(new Telegram.Bot.Types.InlineKeyboardButton[][]
+										{new [] {
+												 new Telegram.Bot.Types.InlineKeyboardButton("Текст для первой кнопки","callback1"),
+												 new Telegram.Bot.Types.InlineKeyboardButton("Текст второй кнопки","callback2"),
+												 },
+									   });
+
+						bot.OnCallbackQuery += async (object sc, Telegram.Bot.Args.CallbackQueryEventArgs ev) =>
+						{
+							var messages = ev.CallbackQuery.Message;
+							if (ev.CallbackQuery.Data == "callback1")
+							{
+								// сюда то что нужно сделать при нажатии на первую кнопку 
+							}
+							else
+							if (ev.CallbackQuery.Data == "callback2")
+							{
+								// сюда то что сделать при нажатии на вторую кнопку
+							}
+						};
+					}
+
+
+
+
+				}
+			}
 
         }
 
