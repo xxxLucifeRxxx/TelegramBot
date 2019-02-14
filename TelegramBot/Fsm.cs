@@ -29,6 +29,10 @@ namespace TelegramBot
                     updateState = new Dialog();
                     break;
 
+				case StateChat.Location:
+					updateState = new States.Location();
+					break;
+
                 default:
                     throw new AggregateException();
             }

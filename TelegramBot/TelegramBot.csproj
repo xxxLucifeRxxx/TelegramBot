@@ -52,6 +52,7 @@
     <Compile Include="States\Dialog.cs" />
     <Compile Include="Fsm.cs" />
     <Compile Include="States\IUpdateState.cs" />
+    <Compile Include="States\Location.cs" />
     <Compile Include="States\MainState.cs" />
     <Compile Include="MyBot.cs" />
     <Compile Include="Program.cs" />

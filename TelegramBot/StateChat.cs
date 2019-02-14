@@ -3,6 +3,7 @@
     public enum StateChat
     {
         Main,
-        Dialog
+        Dialog,
+		Location,
     }
 }
