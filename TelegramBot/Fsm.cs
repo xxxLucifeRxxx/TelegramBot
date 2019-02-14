@@ -14,7 +14,7 @@ namespace TelegramBot
             var state = states.FirstOrDefault(x => x.ChatId == chatId);
             if (state == null)
             {
-                state = new State() { ChatId = chatId, StateChat = StateChat.Main };
+                state = new State() { ChatId = chatId, StateChat = StateChat.Main }; 
                 states.Add(state);
             }
 
