@@ -14,26 +14,30 @@ namespace TelegramBot
             var state = states.FirstOrDefault(x => x.ChatId == chatId);
             if (state == null)
             {
-                state = new State() { ChatId = chatId, StateChat = StateChat.Main };  
+                state = new State() { ChatId = chatId, StateChat = StateChat.StartMain };  
                 states.Add(state);
             }
 
             IUpdateState updateState;
             switch (state.StateChat)
             {
-                case StateChat.Main:
-                    updateState = new MainState();
+                case StateChat.StartMain:
+                    updateState = new StartMain();
                     break;
 
-                case StateChat.Dialog:
-                    updateState = new Dialog();
+                case StateChat.EndAddress:
+                    updateState = new EndAddress();
                     break;
 
-				case StateChat.Location:
-					updateState = new States.Location();
+				case StateChat.Time:
+					updateState = new SendingTime();
 					break;
 
-                default:
+                //case StateChat.Number:
+	               // updateState = new SendingNumber();
+	               // break;
+
+				default:
                     throw new AggregateException();
             }
             updateState.UpdateAsync(msg, bot, chatId, state);

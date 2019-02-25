@@ -2,8 +2,9 @@
 {
     public enum StateChat
     {
-        Main,
-        Dialog,
-		Location,
+        StartMain,
+        EndAddress,
+		Time,
+		Number
     }
 }
