@@ -8,77 +8,55 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBot
 {
-    internal class MyBot
-    {
-        private readonly List<State> states = new List<State>();
-        private static TelegramBotClient bot;
+	internal class MyBot
+	{
+		public const string CallbackLocation = "callback1";
+		private readonly List<State> states = new List<State>();
+		private static TelegramBotClient bot;
 
-        public MyBot(string Token)
-        {
-            bot = new TelegramBotClient(Token);
-            bot.OnMessage += Bot_OnMessageReceivede;
-            bot.OnInlineQuery += BotOnInlineQueryReceived;
-			var me = bot.GetMeAsync().Result;
-            Console.WriteLine("I'm alive " + me.FirstName);
-        }
-
-        private static async void BotOnInlineQueryReceived(object sender, InlineQueryEventArgs inlineQueryEventArgs)
+		public MyBot(string Token)
 		{
-
-			Console.WriteLine($"Получен встроенный запрос от: {inlineQueryEventArgs.InlineQuery.From.Id}");
-
-			InlineQueryResultBase[] results =
+			bot = new TelegramBotClient(Token);
+			bot.OnMessage += Bot_OnMessageReceivede;
+			bot.OnCallbackQuery += async (object sender, CallbackQueryEventArgs e) =>
 			{
-				new InlineQueryResultLocation(
-						id: "1",
-						latitude: 40.7058316f,
-						longitude: -74.2581888f,
-						title: "New York") // отображаемый результат
+				var message = e.CallbackQuery.Message;
+				if (e.CallbackQuery.Data == CallbackLocation)
+				{
+					await Task.Factory.StartNew(() =>
 					{
-						InputMessageContent = new InputLocationMessageContent(
-							latitude: 40.7058316f,
-							longitude: -74.2581888f) // сообщение, если выбран результат
-					},
-
-				new InlineQueryResultLocation(
-						id: "2",
-						latitude: 13.1449577f,
-						longitude: 52.507629f,
-						title: "Berlin") // отображаемый результат
-					{
-						InputMessageContent = new InputLocationMessageContent(
-							latitude: 13.1449577f,
-							longitude: 52.507629f) // сообщение, если выбран результат
-					}
+						var RequestReplyKeyboard = new ReplyKeyboardMarkup(new[]
+						{
+							KeyboardButton.WithRequestLocation(CallbackLocation),
+						});
+					});
+				}
+				else if (e.CallbackQuery.Data == "callback2")
+				{
+				}
 			};
-
-				await bot.AnswerInlineQueryAsync(
-				inlineQueryEventArgs.InlineQuery.Id,
-				results,
-				isPersonal: true,
-				cacheTime: 0);
+			var me = bot.GetMeAsync().Result;
+			Console.WriteLine("I'm alive " + me.FirstName);
 		}
 
 		public void Start()
-        {
-            Console.WriteLine("Try start Recieveing ...");
-            bot.StartReceiving();
-            Console.WriteLine("Start Recieveing");
-        }
+		{
+			Console.WriteLine("Try start Recieveing ...");
+			bot.StartReceiving();
+			Console.WriteLine("Start Recieveing");
+		}
 
-        public void Stop()
-        {
-            bot.StopReceiving();
-        }
+		public void Stop()
+		{
+			bot.StopReceiving();
+		}
 
-        private async void Bot_OnMessageReceivede(object sender, MessageEventArgs e)
-        {
-            await Task.Factory.StartNew(() =>
-            {
-
-                var fsm = new Fsm(e.Message.Chat.Id, states, e.Message, bot);
-
+		private async void Bot_OnMessageReceivede(object sender, MessageEventArgs e)
+		{
+			await Task.Factory.StartNew(() =>
+			{
+				var fsm = new Fsm(e.Message.Chat.Id, states, e.Message, bot);
 			});
-        }
-    }
+		}
+	}
 }

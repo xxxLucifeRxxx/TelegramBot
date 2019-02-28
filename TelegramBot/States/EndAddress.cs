@@ -6,32 +6,25 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBot.States
 {
-    public class EndAddress : IUpdateState
-    {
+	public class EndAddress : IUpdateState
+	{
 		public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, State state)
-        {
-
-	        if (msg.Type == MessageType.Location)
-	        {
-				await bot.SendTextMessageAsync(chatId, "Теперь назначьте пожалуйста время на которое желаете заказть такси. \n " +
-				                                       "Тут есть кнопка для отправки текущего времени, также вы сами можеете вписать время в виде текста");
+		{
+			if (msg.Type == MessageType.Location)
+			{
+				await bot.SendTextMessageAsync(chatId, "Теперь назначьте пожалуйста время на которое желаете заказать такси. \n " +
+													   "Тут есть кнопка для отправки текущего времени, также вы сами можете вписать время в виде текста");
 				state.StateChat = StateChat.Time;
-
-				
-	        }
-			else if (msg.Type == MessageType.Text)
-	        {
-		        msg.Text = msg.Location.ToString();
 			}
-
+			else if (msg.Type == MessageType.Text)
+			{
+				msg.Text = msg.Location.ToString();
+			}
 			else
-            {
-                await bot.SendTextMessageAsync(chatId, "Отправленное вами сообщение не распознается как адрес.");
-            }
-        }
-
-   
-
+			{
+				await bot.SendTextMessageAsync(chatId, "Отправленное вами сообщение не распознается как адрес.");
+			}
+		}
 	}
 }
 
