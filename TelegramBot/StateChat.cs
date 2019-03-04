@@ -1,10 +1,11 @@
 ﻿namespace TelegramBot
 {
-    public enum StateChat
-    {
-        StartMain,
-        EndAddress,
+	public enum StateChat
+	{
+		StartMain,
+		EndAddress,
 		Time,
-		Number
-    }
+		Number,
+		StartText
+	}
 }

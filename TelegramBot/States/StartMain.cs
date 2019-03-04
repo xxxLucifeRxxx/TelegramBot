@@ -13,50 +13,40 @@ namespace TelegramBot.States
 		{
 			switch (msg.Type)
 			{
-				case MessageType.Text when msg.Text.Equals("/start", StringComparison.OrdinalIgnoreCase):
+				case MessageType.Text when msg.Text.Equals("/order", StringComparison.OrdinalIgnoreCase):
+					var requestReplyKeyboard = new ReplyKeyboardMarkup(new[]
 					{
-						var keyboard = new InlineKeyboardMarkup(new[]
-						{
-						new[]
-						{
-							InlineKeyboardButton.WithCallbackData("Местонахождение", MyBot.CallbackLocation),
-						}
-					});
+							KeyboardButton.WithRequestLocation("Местоположение"),
+					}, true, true);
 
-						////var RequestReplyKeyboard = new ReplyKeyboardMarkup(new[]
-						////{
-						////	KeyboardButton.WithRequestLocation("Местоположение"),
-						////});
-						//replykeyboardmarkup replykeyboard = new[]
-						//{
-						//	new[] { "плохо😒", "хорошо😃", "отлично😁", "домой🏚" },
+					await bot.SendTextMessageAsync(
+						chatId: msg.Chat.Id,
+						text: "`Здравствуйте, откуда вас забрать? \n" +
+							  "Для определения вашего местонахождения " +
+							  "в настройках телефона включите` *геолокацию.*",
+						replyMarkup: requestReplyKeyboard,
+						parseMode: ParseMode.Markdown);
+					state.StateChat = StateChat.StartText;
+					break;
 
-						//};
-
-						await bot.SendTextMessageAsync(
-							chatId: msg.Chat.Id,
-							text: "`Здравствуйте, откуда вас забрать? \n" +
-								  "Для определения вашего местонахождения " +
-								  "в настройках телефона включите` *геолокацию.*",
-							replyMarkup: keyboard,
-							parseMode: ParseMode.Markdown);
-
-						return;
-					}
 				case MessageType.Text:
 					await bot.SendTextMessageAsync(
 						chatId: msg.Chat.Id,
-						text: "Для заказа такси введите команду /start");
-					break;
-
-				case MessageType.Location:
-					await bot.SendTextMessageAsync(
-						chatId: msg.Chat.Id,
-						text: "Укажите куда вам нужно ехать, прикрепив метку на карте к данному диалогу.");
-
-					state.StateChat = StateChat.EndAddress;
+						text: "Для заказа такси введите команду \n /order");
 					break;
 			}
 		}
 	}
 }
+
+/*
+
+	var keyboard = new InlineKeyboardMarkup(new[]
+	{
+	new[]
+	{
+		InlineKeyboardButton.WithCallbackData("Местонахождение", MyBot.CallbackLocation),
+	 }
+   });
+
+*/

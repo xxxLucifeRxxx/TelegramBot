@@ -41,7 +41,7 @@ namespace TelegramBot
 
 		public void Start()
 		{
-			Console.WriteLine("Try start Recieveing ...");
+			Console.WriteLine("Try start Reciveing ...");
 			bot.StartReceiving();
 			Console.WriteLine("Start Recieveing");
 		}
