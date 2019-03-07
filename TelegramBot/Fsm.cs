@@ -37,6 +37,10 @@ namespace TelegramBot
 					updateState = new StartText();
 					break;
 
+				case StateChat.Cancel:
+					updateState = new Cancel();
+					break;
+
 				//case StateChat.Number:
 				// updateState = new SendingNumber();
 				// break;
@@ -45,6 +49,24 @@ namespace TelegramBot
 					throw new AggregateException();
 			}
 			updateState.UpdateAsync(msg, bot, chatId, state);
+		}
+	}
+
+	public class Cancel : IUpdateState
+	{
+		public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, State state)
+		{
+			await bot.AnswerCallbackQueryAsync(
+				callbackQueryId: Helper.data,
+				"Заказ отменен",
+				true, null, 30);
+
+			await bot.SendTextMessageAsync(
+				chatId: msg
+					.Chat.Id,
+				text: "Заказ отменен");
+
+			state.StateChat = StateChat.StartMain;
 		}
 	}
 }

@@ -19,6 +19,14 @@ namespace TelegramBot.States
 							KeyboardButton.WithRequestLocation("Местоположение"),
 					}, true, true);
 
+					var keyboard = new InlineKeyboardMarkup(new[]
+					{
+						new[]
+						{
+							InlineKeyboardButton.WithCallbackData("Отмена", MyBot.CallbackCancel),
+						}
+					});
+
 					await bot.SendTextMessageAsync(
 						chatId: msg.Chat.Id,
 						text: "`Здравствуйте, откуда вас забрать? \n" +
@@ -26,7 +34,14 @@ namespace TelegramBot.States
 							  "в настройках телефона включите` *геолокацию.*",
 						replyMarkup: requestReplyKeyboard,
 						parseMode: ParseMode.Markdown);
+
+					await bot.SendTextMessageAsync(
+						chatId: msg.Chat.Id,
+						text: "Или чтобы отменить заказ нажмите Отмена ↓↓↓",
+						replyMarkup: keyboard);
+
 					state.StateChat = StateChat.StartText;
+
 					break;
 
 				case MessageType.Text:
@@ -45,7 +60,7 @@ namespace TelegramBot.States
 	{
 	new[]
 	{
-		InlineKeyboardButton.WithCallbackData("Местонахождение", MyBot.CallbackLocation),
+		InlineKeyboardButton.WithCallbackData("Местонахождение", MyBot.CallbackCancel),
 	 }
    });
 

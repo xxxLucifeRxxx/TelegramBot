@@ -1,4 +1,5 @@
-﻿using Telegram.Bot;
+﻿using System;
+using Telegram.Bot;
 using Telegram.Bot.Requests;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -21,7 +22,7 @@ namespace TelegramBot.States
 				var send = new SendMessageRequest(msg.Chat.Id,
 					"Укажите куда вам нужно ехать, прикрепив метку на карте к данному диалогу.")
 				{
-					ReplyMarkup = new ReplyKeyboardRemove()
+					ReplyMarkup = new ReplyKeyboardRemove(),
 				};
 				await bot.MakeRequestAsync(send);
 

@@ -6,6 +6,7 @@
 		EndAddress,
 		Time,
 		Number,
-		StartText
+		StartText,
+		Cancel
 	}
 }
