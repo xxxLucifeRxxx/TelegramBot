@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="States\Cancel.cs" />
     <Compile Include="States\EndAddress.cs" />
     <Compile Include="Fsm.cs" />
     <Compile Include="States\IUpdateState.cs" />

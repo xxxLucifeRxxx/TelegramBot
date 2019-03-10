@@ -52,21 +52,5 @@ namespace TelegramBot
 		}
 	}
 
-	public class Cancel : IUpdateState
-	{
-		public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, State state)
-		{
-			await bot.AnswerCallbackQueryAsync(
-				callbackQueryId: Helper.data,
-				"Заказ отменен",
-				true, null, 30);
 
-			await bot.SendTextMessageAsync(
-				chatId: msg
-					.Chat.Id,
-				text: "Заказ отменен");
-
-			state.StateChat = StateChat.StartMain;
-		}
-	}
 }

@@ -2,7 +2,6 @@
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBot.States
@@ -23,7 +22,7 @@ namespace TelegramBot.States
 					{
 						new[]
 						{
-							InlineKeyboardButton.WithCallbackData("Отмена", MyBot.CallbackCancel),
+							InlineKeyboardButton.WithCallbackData("Отмена", Globals.CallbackCancel),
 						}
 					});
 
