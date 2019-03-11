@@ -41,6 +41,10 @@ namespace TelegramBot
 					updateState = new Cancel();
 					break;
 
+				case StateChat.SendingTime:
+					updateState = new SendingTime();
+					break;
+
 				//case StateChat.Number:
 				// updateState = new SendingNumber();
 				// break;
@@ -51,6 +55,4 @@ namespace TelegramBot
 			updateState.UpdateAsync(msg, bot, chatId, state);
 		}
 	}
-
-
 }

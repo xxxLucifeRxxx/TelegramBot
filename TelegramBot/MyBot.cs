@@ -11,6 +11,7 @@ namespace TelegramBot
 	{
 		public static string Data;
 		public const string CallbackCancel = "callback";
+		public const string CallbackTime = "callback1";
 	}
 
 	internal class MyBot
@@ -22,7 +23,7 @@ namespace TelegramBot
 		{
 			_bot = new TelegramBotClient(token);
 			_bot.OnMessage += Bot_OnMessageReceived;
-			_bot.OnCallbackQuery += ( sender, e) =>
+			_bot.OnCallbackQuery += (sender, e) =>
 			{
 				if (e.CallbackQuery.Data == Globals.CallbackCancel)
 				{
@@ -30,13 +31,20 @@ namespace TelegramBot
 					var state = _states.FirstOrDefault(x => x.ChatId == e.CallbackQuery.Message.Chat.Id);
 					if (state != null)
 						state.StateChat = StateChat.Cancel;
-					var fsm = new Fsm(e.CallbackQuery.Message.Chat.Id, _states, e.CallbackQuery.Message, _bot);
+					// ReSharper disable once ObjectCreationAsStatement
+					new Fsm(e.CallbackQuery.Message.Chat.Id, _states, e.CallbackQuery.Message, _bot);
+				}
+				else if (e.CallbackQuery.Data == Globals.CallbackTime)
+				{
+					Globals.Data = e.CallbackQuery.Id;
+					var state = _states.FirstOrDefault(x => x.ChatId == e.CallbackQuery.Message.Chat.Id);
+					if (state != null)
+						state.StateChat = StateChat.SendingTime;
 				}
 			};
 			var me = _bot.GetMeAsync().Result;
 			Console.WriteLine("I'm alive " + me.FirstName);
 		}
-
 
 		public void Start()
 		{

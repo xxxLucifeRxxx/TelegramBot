@@ -7,6 +7,7 @@
 		Time,
 		Number,
 		StartText,
-		Cancel
+		Cancel,
+		SendingTime
 	}
 }
