@@ -52,11 +52,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="States\Cancel.cs" />
+    <Compile Include="States\CarSearch.cs" />
     <Compile Include="States\EndAddress.cs" />
     <Compile Include="Fsm.cs" />
     <Compile Include="States\IUpdateState.cs" />
     <Compile Include="States\SearchCar.cs" />
-    <Compile Include="States\SendingNumber.cs" />
+    <Compile Include="States\PaymentMethod.cs" />
     <Compile Include="States\SendingTime.cs" />
     <Compile Include="States\StartMain.cs" />
     <Compile Include="MyBot.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="State.cs" />
     <Compile Include="StateChat.cs" />
     <Compile Include="States\StartText.cs" />
+    <Compile Include="States\Time.cs" />
     <Compile Include="States\UserConfirmation.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -29,10 +29,6 @@ namespace TelegramBot
 					updateState = new EndAddress();
 					break;
 
-				case StateChat.Time:
-					updateState = new SendingTime();
-					break;
-
 				case StateChat.StartText:
 					updateState = new StartText();
 					break;
@@ -45,11 +41,19 @@ namespace TelegramBot
 					updateState = new SendingTime();
 					break;
 
-				//case StateChat.Number:
-				// updateState = new SendingNumber();
-				// break;
+                case StateChat.PaymentMethod:
+                    updateState = new PaymentMethod();
+                    break;
 
-				default:
+			    case StateChat.Time:
+			        updateState = new Time();
+			        break;
+
+			    case StateChat.CarSearch:
+			        updateState = new CarSearch();
+			        break;
+
+                default:
 					throw new AggregateException();
 			}
 			updateState.UpdateAsync(msg, bot, chatId, state);

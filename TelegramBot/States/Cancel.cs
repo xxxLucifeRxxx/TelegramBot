@@ -10,9 +10,12 @@ namespace TelegramBot.States
 		public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, State state)
 		{
 
-			await bot.AnswerCallbackQueryAsync(
-				callbackQueryId: Globals.Data,
-				"Заказ отменен",
+            var data = Globals.Data;    //Временно пока не заведена БД
+		    Globals.Data = null;        //Временно пока не заведена БД
+
+            await bot.AnswerCallbackQueryAsync(
+				callbackQueryId: data,
+				text:"Заказ отменен",
 				true, null, 30);
 
 			var send = new SendMessageRequest(msg.Chat.Id,

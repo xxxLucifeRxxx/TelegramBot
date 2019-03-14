@@ -18,15 +18,19 @@ namespace TelegramBot.States
 							KeyboardButton.WithRequestLocation("Местоположение"),
 					}, true, true);
 
-					var keyboard = new InlineKeyboardMarkup(new[]
+
+                    var keyboard = new InlineKeyboardMarkup(new[]
 					{
 						new[]
 						{
 							InlineKeyboardButton.WithCallbackData("Отмена", Globals.CallbackCancel),
+
 						}
 					});
 
-					await bot.SendTextMessageAsync(
+
+
+                    await bot.SendTextMessageAsync(
 						chatId: msg.Chat.Id,
 						text: "`Здравствуйте, откуда вас забрать? \n" +
 							  "Для определения вашего местонахождения " +

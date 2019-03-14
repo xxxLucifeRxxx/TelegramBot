@@ -4,10 +4,11 @@
 	{
 		StartMain,
 		EndAddress,
-		Time,
-		Number,
 		StartText,
 		Cancel,
-		SendingTime
+		SendingTime,
+	    PaymentMethod,
+	    Time,
+	    CarSearch
 	}
 }

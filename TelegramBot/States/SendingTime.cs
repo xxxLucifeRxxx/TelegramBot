@@ -3,38 +3,30 @@ using System.Globalization;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
-using System.Text.RegularExpressions;
 
 namespace TelegramBot.States
 {
-	public partial class SendingTime : IUpdateState
+	public class SendingTime : IUpdateState
 	{
 		public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, State state)
 		{
-			var time = DateTime.Now.ToShortTimeString();
-			var keyboard = new InlineKeyboardMarkup(new[]
-			{
-				new[]
-				{
-					InlineKeyboardButton.WithCallbackData("Указать текущее время", Globals.CallbackTime),
-				}
-			});
+		    var requestReplyKeyboard = new ReplyKeyboardMarkup(new[]
+		    {
+		        KeyboardButton.WithRequestContact("Отправить текущий номер"),
+		    }, true, true);
 
-			if (msg.Text.Equals("Текущее время", StringComparison.OrdinalIgnoreCase))
+            if (!Globals.IsValidTime(msg.Text))
 			{
 				await bot.SendTextMessageAsync(chatId,
-					time + "\n Укажите пожалуйста ваш номер телефона, также вы можете нажать кнопку для отправки вашего текущего номера телефона.");
+					 "Вы не правильно указали время");
 			}
+			else
+			{
+			    await bot.SendTextMessageAsync(chatId,
+			        "Теперь укажите пожалуйста ваш номер телефона",
+			        replyMarkup:requestReplyKeyboard);
+			    state.StateChat = StateChat.PaymentMethod;
+            }
 		}
 	}
-
-	public class Templates
-	{
-		public static void TemplatesTime()
-		{
-			public static string[] timeTemplate = { "00:59" };
-
-		private Regex rgx = new Regex(@"^[00-24, 00-59]");
-	}
-}
 }
