@@ -41,19 +41,19 @@ namespace TelegramBot
 					updateState = new SendingTime();
 					break;
 
-                case StateChat.PaymentMethod:
-                    updateState = new PaymentMethod();
-                    break;
+				case StateChat.PaymentMethod:
+					updateState = new PaymentMethod();
+					break;
 
-			    case StateChat.Time:
-			        updateState = new Time();
-			        break;
+				case StateChat.Time:
+					updateState = new Time();
+					break;
 
-			    case StateChat.CarSearch:
-			        updateState = new CarSearch();
-			        break;
+				//case StateChat.CarSearch:
+				//	updateState = new CarSearch();
+				//	break;
 
-                default:
+				default:
 					throw new AggregateException();
 			}
 			updateState.UpdateAsync(msg, bot, chatId, state);

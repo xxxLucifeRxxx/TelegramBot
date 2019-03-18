@@ -24,8 +24,8 @@ namespace TelegramBot.States
 					ReplyMarkup = new ReplyKeyboardRemove(),
 				};
 
-                await bot.MakeRequestAsync(send);
-                state.StateChat = StateChat.EndAddress;
+				await bot.MakeRequestAsync(send);
+				state.StateChat = StateChat.EndAddress;
 			}
 		}
 	}
