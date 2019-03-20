@@ -4,7 +4,7 @@ namespace TelegramBot.Model
 {
 	public class Context : DbContext
 	{
-		public Context() : base("TaxiBotDatabase")
+		public Context() : base("db_bot")
 		{
 			Database.SetInitializer(new Class1());
 		}

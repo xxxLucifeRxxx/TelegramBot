@@ -1,6 +1,7 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
+using TelegramBot.Enumerations;
 
 namespace TelegramBot.States
 {
@@ -18,7 +19,7 @@ namespace TelegramBot.States
                 text: "Текущее время отправлено \n" +
                       "Теперь укажите пожалуйста ваш номер телефона.",
                 replyMarkup: requestReplyKeyboard);
-            state.StateChat = StateChat.PaymentMethod;
+            state.StateChatEnum = StateChatEnum.PaymentMethod;
 
         }
     }

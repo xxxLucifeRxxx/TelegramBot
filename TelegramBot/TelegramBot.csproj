@@ -75,9 +75,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enumerations\ClaimStatusEnum.cs" />
+    <Compile Include="Enumerations\PaymentMethodEnum.cs" />
+    <Compile Include="Model\Application.cs" />
     <Compile Include="Model\Class1.cs" />
     <Compile Include="Model\Context.cs" />
-    <Compile Include="Model\Model.cs" />
+    <Compile Include="Model\Driver.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="State.cs" />
     <Compile Include="States\Cancel.cs" />
     <Compile Include="States\CarSearch.cs" />
@@ -91,26 +95,19 @@
     <Compile Include="MyBot.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StateChat.cs" />
+    <Compile Include="Enumerations\StateChatEnum.cs" />
     <Compile Include="States\StartText.cs" />
     <Compile Include="States\Time.cs" />
     <Compile Include="States\UserConfirmation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Model\DatabaseTBot.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Model\DatabaseTBot_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>DatabaseTBot.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">

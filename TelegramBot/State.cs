@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TelegramBot.Enumerations;
 
 namespace TelegramBot
 {
 	public class State
 	{
 		public long ChatId { get; set; }
-		public StateChat StateChat { get; set; }
+		public StateChatEnum StateChatEnum { get; set; }
 	}
 }

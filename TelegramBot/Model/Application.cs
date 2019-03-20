@@ -1,27 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TelegramBot.Model
 {
-	public class User
-	{
-		[Key]
-		public int UserId { get; set; } // ID
-
-		public int ChatId { get; set; } // Это уникальный идентификатор чата переписки
-		public string NumbPhone { get; set; } // Номер телефона получаемый на этапе составления заявки
-		public int State { get; set; } // Состояния в виде отдельных классов по которым пользователь перемещается
-
-		// Ссылка на заявки
-		public virtual List<Application> Requests { get; set; }
-	}
-
 	public class Application
 	{
-		/// Todo: Нужно будет сделать Enum список для Application.State и для PaymentMethod
-
 		[Key]
 		public int ApplicationId { get; set; } // ID
 
@@ -43,17 +27,5 @@ namespace TelegramBot.Model
 		// Ссылка на водителя
 		[ForeignKey(nameof(DriverId))]
 		public virtual Driver Driver { get; set; }
-	}
-
-	public class Driver
-	{
-		[Key]
-		public int DriverId { get; set; }// ID
-
-		public string FullName { get; set; }// ФИО водителя
-		public string NumberCar { get; set; }// Номер автомобиля
-
-		// Ссылка на заявки
-		public virtual List<Application> Requests { get; set; }
 	}
 }

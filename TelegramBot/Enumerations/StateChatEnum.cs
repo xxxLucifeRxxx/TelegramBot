@@ -1,6 +1,6 @@
-﻿namespace TelegramBot
+﻿namespace TelegramBot.Enumerations
 {
-	public enum StateChat
+	public enum StateChatEnum
 	{
 		StartMain,
 		EndAddress,

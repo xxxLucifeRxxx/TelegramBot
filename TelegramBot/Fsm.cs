@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using TelegramBot.Enumerations;
 using TelegramBot.States;
+using Context = TelegramBot.Model.Context;
+using User = TelegramBot.Model.User;
 
 namespace TelegramBot
 {
@@ -11,45 +15,57 @@ namespace TelegramBot
 	{
 		public Fsm(long chatId, List<State> states, Message msg, TelegramBotClient bot)
 		{
+			var db = new Context();
+			User user = new User
+			{
+				ChatId = chatId,
+				State = StateChatEnum.StartText.ToString()
+			};
+
 			var state = states.FirstOrDefault(x => x.ChatId == chatId);
 			if (state == null)
 			{
-				state = new State() { ChatId = chatId, StateChat = StateChat.StartMain };
+				state = new State() { ChatId = chatId, StateChatEnum = StateChatEnum.StartMain };
 				states.Add(state);
 			}
 
 			IUpdateState updateState;
-			switch (state.StateChat)
+			switch (state.StateChatEnum)
 			{
-				case StateChat.StartMain:
+				case StateChatEnum.StartMain:
+					if (db.Users.Any(x => x.ChatId != chatId))
+					{
+						db.Users.Add(user);
+						db.SaveChanges();
+					}
 					updateState = new StartMain();
 					break;
 
-				case StateChat.EndAddress:
+				case StateChatEnum.EndAddress:
 					updateState = new EndAddress();
 					break;
 
-				case StateChat.StartText:
+				case StateChatEnum.StartText:
 					updateState = new StartText();
 					break;
 
-				case StateChat.Cancel:
+				case StateChatEnum.Cancel:
 					updateState = new Cancel();
 					break;
 
-				case StateChat.SendingTime:
+				case StateChatEnum.SendingTime:
 					updateState = new SendingTime();
 					break;
 
-				case StateChat.PaymentMethod:
+				case StateChatEnum.PaymentMethod:
 					updateState = new PaymentMethod();
 					break;
 
-				case StateChat.Time:
+				case StateChatEnum.Time:
 					updateState = new Time();
 					break;
 
-				//case StateChat.CarSearch:
+				//case StateChatEnum.CarSearch:
 				//	updateState = new CarSearch();
 				//	break;
 

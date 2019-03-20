@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
+using TelegramBot.Enumerations;
 
 namespace TelegramBot
 {
@@ -47,7 +48,7 @@ namespace TelegramBot
 			            Globals.Data = e.CallbackQuery.Id;
 			            var state = _states.FirstOrDefault(x => x.ChatId == e.CallbackQuery.Message.Chat.Id);
 			            if (state != null)
-			                state.StateChat = StateChat.Cancel;
+			                state.StateChatEnum = StateChatEnum.Cancel;
 			            // ReSharper disable once ObjectCreationAsStatement
 			            new Fsm(e.CallbackQuery.Message.Chat.Id, _states, e.CallbackQuery.Message, _bot);
 			            break;
@@ -58,7 +59,7 @@ namespace TelegramBot
 			            Globals.Data = e.CallbackQuery.Id;
 			            var state = _states.FirstOrDefault(x => x.ChatId == e.CallbackQuery.Message.Chat.Id);
 			            if (state != null)
-			                state.StateChat = StateChat.Time;
+			                state.StateChatEnum = StateChatEnum.Time;
 			            // ReSharper disable once ObjectCreationAsStatement
 			            new Fsm(e.CallbackQuery.Message.Chat.Id, _states, e.CallbackQuery.Message, _bot);
 			            break;
@@ -68,7 +69,7 @@ namespace TelegramBot
 			            Globals.Data = e.CallbackQuery.Id;
 			            var state = _states.FirstOrDefault(x => x.ChatId == e.CallbackQuery.Message.Chat.Id);
 			            if (state != null)
-			                state.StateChat = StateChat.CarSearch;
+			                state.StateChatEnum = StateChatEnum.CarSearch;
 			            // ReSharper disable once ObjectCreationAsStatement
 			            new Fsm(e.CallbackQuery.Message.Chat.Id, _states, e.CallbackQuery.Message, _bot);
 			            break;
@@ -78,7 +79,7 @@ namespace TelegramBot
 			            Globals.Data = e.CallbackQuery.Id;
 			            var state = _states.FirstOrDefault(x => x.ChatId == e.CallbackQuery.Message.Chat.Id);
 			            if (state != null)
-			                state.StateChat = StateChat.CarSearch;
+			                state.StateChatEnum = StateChatEnum.CarSearch;
 			            // ReSharper disable once ObjectCreationAsStatement
 			            new Fsm(e.CallbackQuery.Message.Chat.Id, _states, e.CallbackQuery.Message, _bot);
 			            break;

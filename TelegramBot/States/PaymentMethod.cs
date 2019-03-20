@@ -1,10 +1,9 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Requests;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using TelegramBot.Enumerations;
 
 namespace TelegramBot.States
 {
@@ -58,7 +57,7 @@ namespace TelegramBot.States
 		            text: "или через",
 		            replyMarkup: keyboardMobileBank);
 
-                state.StateChat = StateChat.EndAddress;
+                state.StateChatEnum = StateChatEnum.EndAddress;
 		    }
 
         }

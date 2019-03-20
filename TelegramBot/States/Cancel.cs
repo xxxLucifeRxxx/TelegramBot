@@ -2,6 +2,7 @@
 using Telegram.Bot.Requests;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
+using TelegramBot.Enumerations;
 
 namespace TelegramBot.States
 {
@@ -25,7 +26,7 @@ namespace TelegramBot.States
 			};
 			await bot.MakeRequestAsync(send);
 
-			state.StateChat = StateChat.StartMain;
+			state.StateChatEnum = StateChatEnum.StartMain;
 		}
 	}
 }

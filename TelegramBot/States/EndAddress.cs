@@ -2,6 +2,7 @@
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using TelegramBot.Enumerations;
 
 namespace TelegramBot.States
 {
@@ -33,7 +34,7 @@ namespace TelegramBot.States
 			              "Формат для отправки времени 'hh:mm \n" +
 			              "Где hh-часы, mm-минуты'",
 			        replyMarkup: keyboard);
-			    state.StateChat = StateChat.SendingTime;
+			    state.StateChatEnum = StateChatEnum.SendingTime;
 
             }
 		}

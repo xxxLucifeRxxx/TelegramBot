@@ -3,6 +3,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using TelegramBot.Enumerations;
 
 namespace TelegramBot.States
 {
@@ -24,11 +25,8 @@ namespace TelegramBot.States
 						new[]
 						{
 							InlineKeyboardButton.WithCallbackData("Отмена", Globals.CallbackCancel),
-
 						}
 					});
-
-
 
                     await bot.SendTextMessageAsync(
 						chatId: msg.Chat.Id,
@@ -43,8 +41,7 @@ namespace TelegramBot.States
 						text: "Или чтобы отменить заказ нажмите Отмена ↓↓↓",
 						replyMarkup: keyboard);
 
-					state.StateChat = StateChat.StartText;
-
+					state.StateChatEnum = StateChatEnum.StartText;
 					break;
 
 				case MessageType.Text:
@@ -56,15 +53,3 @@ namespace TelegramBot.States
 		}
 	}
 }
-
-/*
-
-	var keyboard = new InlineKeyboardMarkup(new[]
-	{
-	new[]
-	{
-		InlineKeyboardButton.WithCallbackData("Местонахождение", MyBot.CallbackCancel),
-	 }
-   });
-
-*/
