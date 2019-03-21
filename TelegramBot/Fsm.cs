@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using TelegramBot.Enumerations;
@@ -13,66 +11,77 @@ namespace TelegramBot
 {
 	public class Fsm
 	{
-		public Fsm(long chatId, List<State> states, Message msg, TelegramBotClient bot)
+		///Todo: Нужно заменить List<State> на Context
+		public Fsm(long chatId, Message msg, TelegramBotClient bot, Context db)
 		{
-			var db = new Context();
-			User user = new User
-			{
-				ChatId = chatId,
-				State = StateChatEnum.StartText.ToString()
-			};
-
-			var state = states.FirstOrDefault(x => x.ChatId == chatId);
+			var state = db.Users.FirstOrDefault(x => x.ChatId == chatId);
 			if (state == null)
 			{
-				state = new State() { ChatId = chatId, StateChatEnum = StateChatEnum.StartMain };
-				states.Add(state);
+				User user = new User
+				{
+					ChatId = chatId,
+					State = StateChatEnum.StartMain
+				};
+				db.Users.Add(user);
+				db.SaveChanges();
 			}
 
 			IUpdateState updateState;
-			switch (state.StateChatEnum)
+			if (state != null)
 			{
-				case StateChatEnum.StartMain:
-					if (db.Users.Any(x => x.ChatId != chatId))
-					{
-						db.Users.Add(user);
-						db.SaveChanges();
-					}
-					updateState = new StartMain();
-					break;
+				switch (state.State)
+				{
+					case StateChatEnum.StartMain:
+						var uid = db.Users.FirstOrDefault(x => x.ChatId == chatId);
+						if (uid == null)
+						{
+							User user = new User
+							{
+								ChatId = chatId,
+								State = StateChatEnum.StartText
+							};
 
-				case StateChatEnum.EndAddress:
-					updateState = new EndAddress();
-					break;
+							db.Users.Add(user);
+							db.SaveChanges();
+						}
 
-				case StateChatEnum.StartText:
-					updateState = new StartText();
-					break;
+						updateState = new StartMain();
+						break;
 
-				case StateChatEnum.Cancel:
-					updateState = new Cancel();
-					break;
+					case StateChatEnum.EndAddress:
+						updateState = new EndAddress();
+						break;
 
-				case StateChatEnum.SendingTime:
-					updateState = new SendingTime();
-					break;
+					case StateChatEnum.StartText:
+						updateState = new StartText();
+						break;
 
-				case StateChatEnum.PaymentMethod:
-					updateState = new PaymentMethod();
-					break;
+					case StateChatEnum.Cancel:
+						updateState = new Cancel();
+						break;
 
-				case StateChatEnum.Time:
-					updateState = new Time();
-					break;
+					case StateChatEnum.SendingTime:
+						updateState = new SendingTime();
+						break;
 
-				//case StateChatEnum.CarSearch:
-				//	updateState = new CarSearch();
-				//	break;
+					case StateChatEnum.PaymentMethod:
+						updateState = new PaymentMethod();
+						break;
 
-				default:
-					throw new AggregateException();
+					case StateChatEnum.Time:
+						updateState = new Time();
+						break;
+
+					//case StateChatEnum.CarSearch:
+					//	updateState = new CarSearch();
+					//	break;
+
+					default:
+						throw new AggregateException();
+				}
+
+				updateState.UpdateAsync(msg, bot, chatId, db);
 			}
-			updateState.UpdateAsync(msg, bot, chatId, state);
 		}
 	}
 }

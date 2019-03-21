@@ -15,6 +15,7 @@ namespace TelegramBot.Model
 		public float LatitudeFrom { get; set; }//Получение координат откуда забрать пользователя в виде долготы
 		public float LongitudeTo { get; set; }//Получение координат куда ехать в виде широты
 		public float LatitudeTo { get; set; }//Получение координат куда ехать в виде долготы
+		public string NumbPhone { get; set; } // Номер телефона получаемый на этапе составления заявки
 		public DateTime Created { get; set; }// Поле для определения времени создания заявки
 		public DateTime Time { get; set; }// На этапе составления заявки пользователь указывает время на которое нужна будет машина
 		public int PaymentMethod { get; set; }// На этапе составления заявки пользователь выбирает метод оплаты

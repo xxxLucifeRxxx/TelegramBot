@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBot.Enumerations;
+using Context = TelegramBot.Model.Context;
 
 namespace TelegramBot.States
 {
 	public class StartMain : IUpdateState
 	{
-		public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, State state)
+		public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, Context db)
 		{
 			switch (msg.Type)
 			{
@@ -19,8 +21,7 @@ namespace TelegramBot.States
 							KeyboardButton.WithRequestLocation("Местоположение"),
 					}, true, true);
 
-
-                    var keyboard = new InlineKeyboardMarkup(new[]
+					var keyboard = new InlineKeyboardMarkup(new[]
 					{
 						new[]
 						{
@@ -28,7 +29,7 @@ namespace TelegramBot.States
 						}
 					});
 
-                    await bot.SendTextMessageAsync(
+					await bot.SendTextMessageAsync(
 						chatId: msg.Chat.Id,
 						text: "`Здравствуйте, откуда вас забрать? \n" +
 							  "Для определения вашего местонахождения " +
@@ -41,7 +42,10 @@ namespace TelegramBot.States
 						text: "Или чтобы отменить заказ нажмите Отмена ↓↓↓",
 						replyMarkup: keyboard);
 
-					state.StateChatEnum = StateChatEnum.StartText;
+					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
+					if (user != null)
+						user.State = StateChatEnum.EndAddress;
+
 					break;
 
 				case MessageType.Text:

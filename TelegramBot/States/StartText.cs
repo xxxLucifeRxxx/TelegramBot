@@ -1,15 +1,17 @@
-﻿using Telegram.Bot;
+﻿using System.Linq;
+using Telegram.Bot;
 using Telegram.Bot.Requests;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBot.Enumerations;
+using TelegramBot.Model;
 
 namespace TelegramBot.States
 {
 	public class StartText : IUpdateState
 	{
-		public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, State state)
+		public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, Context db)
 		{
 			if (msg.Type == MessageType.Location)
 			{
@@ -20,7 +22,10 @@ namespace TelegramBot.States
 				};
 
 				await bot.MakeRequestAsync(send);
-				state.StateChatEnum = StateChatEnum.EndAddress;
+
+				var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
+				if (user != null)
+					user.State = StateChatEnum.EndAddress;
 			}
 			else
 			{
