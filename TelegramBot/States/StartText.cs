@@ -16,10 +16,10 @@ namespace TelegramBot.States
 			if (msg.Type == MessageType.Location)
 			{
 				var send = new SendMessageRequest(msg.Chat.Id,
-					"Укажите куда вам нужно ехать, прикрепив метку на карте к данному диалогу.")
-				{
-					ReplyMarkup = new ReplyKeyboardRemove(),
-				};
+					"Укажите куда вам нужно ехать, прикрепив метку на карте к данному диалогу.");
+				//{
+				//	ReplyMarkup = new ReplyKeyboardRemove(),
+				//};
 
 				await bot.MakeRequestAsync(send);
 

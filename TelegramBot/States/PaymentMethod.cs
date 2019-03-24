@@ -1,15 +1,17 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Requests;
+using System.Linq;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBot.Enumerations;
+using TelegramBot.Model;
 
 namespace TelegramBot.States
 {
 	class PaymentMethod : IUpdateState
 	{
-		public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, State state)
+		public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, Context db)
 		{
 		    var keyboardCashPayment = new InlineKeyboardMarkup(new[]
 		    {
@@ -57,8 +59,10 @@ namespace TelegramBot.States
 		            text: "или через",
 		            replyMarkup: keyboardMobileBank);
 
-                state.StateChatEnum = StateChatEnum.EndAddress;
-		    }
+				var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
+				if (user != null)
+					user.State = StateChatEnum.EndAddress;
+			}
 
         }
 	}

@@ -11,7 +11,6 @@ namespace TelegramBot
 {
 	public class Fsm
 	{
-		///Todo: Нужно заменить List<State> на Context
 		public Fsm(long chatId, Message msg, TelegramBotClient bot, Context db)
 		{
 			var state = db.Users.FirstOrDefault(x => x.ChatId == chatId);
@@ -26,9 +25,10 @@ namespace TelegramBot
 				db.SaveChanges();
 			}
 
-			IUpdateState updateState;
 			if (state != null)
 			{
+				IUpdateState updateState;
+
 				switch (state.State)
 				{
 					case StateChatEnum.StartMain:

@@ -1,13 +1,15 @@
-﻿using Telegram.Bot;
+﻿using System.Linq;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBot.Enumerations;
+using TelegramBot.Model;
 
 namespace TelegramBot.States
 {
     public class Time : IUpdateState
     {
-        public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, State state)
+        public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, Context db)
         {
             var requestReplyKeyboard = new ReplyKeyboardMarkup(new[]
             {
@@ -19,8 +21,10 @@ namespace TelegramBot.States
                 text: "Текущее время отправлено \n" +
                       "Теперь укажите пожалуйста ваш номер телефона.",
                 replyMarkup: requestReplyKeyboard);
-            state.StateChatEnum = StateChatEnum.PaymentMethod;
 
-        }
+			var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
+			if (user != null)
+				user.State = StateChatEnum.PaymentMethod;
+		}
     }
 }

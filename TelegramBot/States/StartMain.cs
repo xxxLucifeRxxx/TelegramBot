@@ -15,36 +15,27 @@ namespace TelegramBot.States
 		{
 			switch (msg.Type)
 			{
-				case MessageType.Text when msg.Text.Equals("/order", StringComparison.OrdinalIgnoreCase):
-					var requestReplyKeyboard = new ReplyKeyboardMarkup(new[]
-					{
-							KeyboardButton.WithRequestLocation("Местоположение"),
-					}, true, true);
+				///Todo: Разобраться с удалением старой клавиатуры и вывода новой на её место
 
-					var keyboard = new InlineKeyboardMarkup(new[]
-					{
-						new[]
-						{
-							InlineKeyboardButton.WithCallbackData("Отмена", Globals.CallbackCancel),
-						}
-					});
+				case MessageType.Text when msg.Text.Equals("/order", StringComparison.OrdinalIgnoreCase):
 
 					await bot.SendTextMessageAsync(
 						chatId: msg.Chat.Id,
 						text: "`Здравствуйте, откуда вас забрать? \n" +
-							  "Для определения вашего местонахождения " +
-							  "в настройках телефона включите` *геолокацию.*",
-						replyMarkup: requestReplyKeyboard,
-						parseMode: ParseMode.Markdown);
+						      "Для определения вашего местонахождения " +
+						      "в настройках телефона включите` *геолокацию,* \n" +
+						      "и нажмите на 1",
+						replyMarkup: new ReplyKeyboardMarkup(new[]
+						{
+							KeyboardButton.WithRequestLocation("1"),
+							new KeyboardButton("Отмена"),
 
-					await bot.SendTextMessageAsync(
-						chatId: msg.Chat.Id,
-						text: "Или чтобы отменить заказ нажмите Отмена ↓↓↓",
-						replyMarkup: keyboard);
+						},true,true),
+						parseMode: ParseMode.Markdown);
 
 					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 					if (user != null)
-						user.State = StateChatEnum.EndAddress;
+						user.State = StateChatEnum.StartText;
 
 					break;
 

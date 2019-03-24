@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +11,6 @@ namespace TelegramBot
 {
 	internal static class Globals
 	{
-		public static string Data;//Переменная для передачи Id запроса callback, используется пока нету БД
 		public const string CallbackCancel = "callback";
 		public const string CallbackTime = "callback1";
 		public const string CallbackCashPayment = "callback2";
@@ -51,40 +49,6 @@ namespace TelegramBot
 			{
 				switch (e.CallbackQuery.Data)
 				{
-					case Globals.CallbackCancel:
-						{
-							Globals.Data = e.CallbackQuery.Id;
-							var state = _db.Users./*Select(s => new State
-							//{
-							//	ChatId = s.ChatId,
-							//	StateChatEnum = s.State
-							//})*/
-								FirstOrDefault(x => x.ChatId == e.CallbackQuery.Message.Chat.Id);
-							if (state != null)
-							{
-								state.State = StateChatEnum.Cancel;
-								_db.SaveChanges();
-							}
-							// ReSharper disable once ObjectCreationAsStatement
-							new Fsm(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message, _bot, _db);
-							break;
-						}
-					case Globals.CallbackTime:
-						{
-							Globals.ArrivalTime = "Ближайшее время";
-							Globals.Data = e.CallbackQuery.Id;
-							var state = _db.Users.Select(s => new State
-							{
-								ChatId = s.ChatId,
-								StateChatEnum = s.State
-							})
-								.FirstOrDefault(x => x.ChatId == e.CallbackQuery.Message.Chat.Id);
-							if (state != null)
-								state.StateChatEnum = StateChatEnum.Time;
-							// ReSharper disable once ObjectCreationAsStatement
-							new Fsm(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message, _bot, _db);
-							break;
-						}
 					case Globals.CallbackCashPayment:
 						{
 							Globals.Data = e.CallbackQuery.Id;
