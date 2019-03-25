@@ -56,20 +56,16 @@ namespace TelegramBot
 						updateState = new StartText();
 						break;
 
-					case StateChatEnum.Cancel:
-						updateState = new Cancel();
-						break;
-
 					case StateChatEnum.SendingTime:
 						updateState = new SendingTime();
 						break;
 
-					case StateChatEnum.PaymentMethod:
-						updateState = new PaymentMethod();
+					case StateChatEnum.SendingNumberPhone:
+						updateState = new SendingNumberPhone();
 						break;
 
-					case StateChatEnum.Time:
-						updateState = new Time();
+					case StateChatEnum.PaymentMethod:
+						updateState = new PaymentMethod();
 						break;
 
 					//case StateChatEnum.CarSearch:

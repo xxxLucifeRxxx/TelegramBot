@@ -10,39 +10,29 @@ using TelegramBot.Model;
 
 namespace TelegramBot.States
 {
-	public class StartText : IUpdateState
+	public class SendingNumberPhone : IUpdateState
 	{
 		public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, Context db)
 		{
 			switch (msg.Type)
 			{
-				case MessageType.Location:
+				case MessageType.Contact:
 					{
-						await bot.SendTextMessageAsync(
-							chatId: msg.Chat.Id,
-							text: "Укажите куда вам нужно ехать, прикрепив метку на карте к данному диалогу.");
+						await bot.SendTextMessageAsync(chatId,
+							"Теперь выберите пожалуйста способ оплаты",
+							replyMarkup: new ReplyKeyboardMarkup(new[]
+							{
+							new KeyboardButton("Наличные"),
+							new KeyboardButton("Мобильный банк"),
+							}, true, true));
 
 						var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 						var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
-						if (application == null)
-						{
-							if (user != null)
-								db.Applications.Add(new Application()
-								{
-									UserId = user.UserId,
-								});
-							db.SaveChanges();
-						}
-
-						if (user != null)
-							user.State = StateChatEnum.EndAddress;
-
 						if (application != null)
-						{
-							application.LatitudeFrom = msg.Location.Latitude;
-							application.LongitudeFrom = msg.Location.Longitude;
-						}
-						db.SaveChanges();
+							application.NumbPhone = msg.Contact.PhoneNumber;
+						if (user != null)
+							user.State = StateChatEnum.PaymentMethod;
+
 						break;
 					}
 				default:
@@ -55,15 +45,15 @@ namespace TelegramBot.States
 								ReplyMarkup = new ReplyKeyboardRemove(),
 							};
 							await bot.MakeRequestAsync(send);
+
 							var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 							if (user != null)
 								user.State = StateChatEnum.StartMain;
 						}
 						else
 						{
-							await bot.SendTextMessageAsync(
-								chatId: msg.Chat.Id,
-								text: "Введенный текст не является вашим местоположением");
+							await bot.SendTextMessageAsync(chatId,
+								"Вы отправили неверный номер телефона");
 						}
 						break;
 					}

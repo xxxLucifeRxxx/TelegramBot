@@ -1,10 +1,11 @@
 ﻿using System;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBot.Enumerations;
 using TelegramBot.Model;
 using System.Linq;
+using Telegram.Bot.Requests;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBot.States
 {
@@ -12,37 +13,57 @@ namespace TelegramBot.States
 	{
 		public async void UpdateAsync(Message msg, TelegramBotClient bot, long chatId, Context db)
 		{
-		    var requestReplyKeyboard = new ReplyKeyboardMarkup(new[]
-		    {
-		        KeyboardButton.WithRequestContact("Отправить текущий номер"),
-		    }, true, true);
-
-            if (!Globals.IsValidTime(msg.Text))
+			if (Globals.IsValidTime(msg.Text))
 			{
+				var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
+				var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
+				if (application != null)
+					if (user != null)
+					{
+						application.Time = DateTime.Parse(msg.Text);
+						user.State = StateChatEnum.SendingNumberPhone;
+					}
 				await bot.SendTextMessageAsync(chatId,
-					 "Вы не правильно указали время");
-			}
-			else if (msg.Text.Equals("Отмена", StringComparison.OrdinalIgnoreCase))
-            {
-	            var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
-	            if (user != null)
-		            user.State = StateChatEnum.Cancel;
-			}
-			else if (msg.Text.Equals("Заказать на сейчас", StringComparison.OrdinalIgnoreCase))
-            {
-	            var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
-	            if (user != null)
-		            user.State = StateChatEnum.Time;
+				$"{msg.Text} отправлено");
+				db.SaveChanges();
 			}
 			else
 			{
-			    await bot.SendTextMessageAsync(chatId,
-			        "Теперь укажите пожалуйста ваш номер телефона",
-			        replyMarkup:requestReplyKeyboard);
+				if (msg.Text.Equals("Отмена", StringComparison.OrdinalIgnoreCase))
+				{
+					var send = new SendMessageRequest(msg.Chat.Id,
+						"Вы отменили заказ")
+					{
+						ReplyMarkup = new ReplyKeyboardRemove(),
+					};
+					await bot.MakeRequestAsync(send);
 
-				var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
-				if (user != null)
-					user.State = StateChatEnum.PaymentMethod;
+					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
+					if (user != null)
+						user.State = StateChatEnum.StartMain;
+				}
+				else if (msg.Text.Equals("Далее", StringComparison.OrdinalIgnoreCase))
+				{
+					await bot.SendTextMessageAsync(
+						msg.Chat.Id,
+						text: "Текущее время отправлено \n" +
+							  "Теперь укажите пожалуйста ваш номер телефона." +
+							  "Для этого нажмите Далее и во всплывающем окне разрешите отправку вашего номера",
+						replyMarkup: new ReplyKeyboardMarkup(new[]
+						{
+							KeyboardButton.WithRequestContact("Далее")
+						}, true, true));
+
+					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
+					var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
+					if (application != null)
+						if (user != null)
+							user.State = StateChatEnum.SendingNumberPhone;
+
+					if (application != null)
+						application.Time = DateTime.Now;
+					db.SaveChanges();
+				}
 			}
 		}
 	}

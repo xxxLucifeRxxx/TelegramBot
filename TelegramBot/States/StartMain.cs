@@ -15,35 +15,35 @@ namespace TelegramBot.States
 		{
 			switch (msg.Type)
 			{
-				///Todo: Разобраться с удалением старой клавиатуры и вывода новой на её место
-
 				case MessageType.Text when msg.Text.Equals("/order", StringComparison.OrdinalIgnoreCase):
+					{
+						await bot.SendTextMessageAsync(
+							chatId: msg.Chat.Id,
+							text: "`Здравствуйте, откуда вас забрать? \n" +
+								  "Для определения вашего местонахождения " +
+								  "в настройках телефона включите` *геолокацию,* \n" +
+								  "и нажмите на Далее",
+							replyMarkup: new ReplyKeyboardMarkup(new[]
+							{
+								KeyboardButton.WithRequestLocation("Далее"),
+								new KeyboardButton("Отмена"),
+							}, true, true),
+							parseMode: ParseMode.Markdown);
 
-					await bot.SendTextMessageAsync(
-						chatId: msg.Chat.Id,
-						text: "`Здравствуйте, откуда вас забрать? \n" +
-						      "Для определения вашего местонахождения " +
-						      "в настройках телефона включите` *геолокацию,* \n" +
-						      "и нажмите на 1",
-						replyMarkup: new ReplyKeyboardMarkup(new[]
-						{
-							KeyboardButton.WithRequestLocation("1"),
-							new KeyboardButton("Отмена"),
-
-						},true,true),
-						parseMode: ParseMode.Markdown);
-
-					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
-					if (user != null)
-						user.State = StateChatEnum.StartText;
-
-					break;
+						var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
+						if (user != null)
+							user.State = StateChatEnum.StartText;
+						db.SaveChanges();
+						break;
+					}
 
 				case MessageType.Text:
-					await bot.SendTextMessageAsync(
-						chatId: msg.Chat.Id,
-						text: "Для заказа такси введите команду \n /order");
-					break;
+					{
+						await bot.SendTextMessageAsync(
+							chatId: msg.Chat.Id,
+							text: "Для заказа такси введите команду \n /order");
+						break;
+					}
 			}
 		}
 	}

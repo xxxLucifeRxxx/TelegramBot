@@ -10,7 +10,7 @@ namespace TelegramBot.Model
 		}
 
 		public DbSet<User> Users { get; set; }
-		public DbSet<Application> Requests { get; set; }
+		public DbSet<Application> Applications { get; set; }
 		public DbSet<Driver> Drivers { get; set; }
 	}
 }

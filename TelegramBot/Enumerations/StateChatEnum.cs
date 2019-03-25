@@ -3,12 +3,11 @@
 	public enum StateChatEnum
 	{
 		StartMain,
-		EndAddress,
 		StartText,
-		Cancel,
+		EndAddress,
 		SendingTime,
-	    PaymentMethod,
-	    Time,
-	    CarSearch
+		SendingNumberPhone,
+		PaymentMethod,
+		CarSearch,
 	}
 }
