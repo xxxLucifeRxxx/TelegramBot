@@ -6,7 +6,6 @@ namespace TelegramBot.Model
 	{
 		public Context() : base("db_bot")
 		{
-			Database.SetInitializer(new Class1());
 		}
 
 		public DbSet<User> Users { get; set; }

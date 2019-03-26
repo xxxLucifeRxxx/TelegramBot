@@ -11,9 +11,16 @@ namespace TelegramBot
 {
 	public class Fsm
 	{
+		public  static readonly object Locker  = new object();
 		public Fsm(long chatId, Message msg, TelegramBotClient bot, Context db)
 		{
-			var state = db.Users.FirstOrDefault(x => x.ChatId == chatId);
+			User state;
+
+			lock (Locker)
+			{
+			  state = db.Users.FirstOrDefault(x => x.ChatId == chatId);
+			}
+
 			if (state == null)
 			{
 				User user = new User

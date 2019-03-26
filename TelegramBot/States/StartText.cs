@@ -17,31 +17,41 @@ namespace TelegramBot.States
 			switch (msg.Type)
 			{
 				case MessageType.Location:
-					{
-						await bot.SendTextMessageAsync(
-							chatId: msg.Chat.Id,
-							text: "Укажите куда вам нужно ехать, прикрепив метку на карте к данному диалогу.");
+				{
+					await bot.SendTextMessageAsync(
+						chatId: msg.Chat.Id,
+						text: "Нажав на иконку прикрепить, она в виде скрепки, выберите пункт геопозиция и выберите место куда вам нужно ехать.",
+						replyMarkup: new ReplyKeyboardMarkup(new[]
+						{
+							new KeyboardButton("Отмена")
+						}, true, true)); 
 
 						var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 						var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
+						if (application != null && application.State == ClaimStatusEnum.Canceled)
+						{
+							if (user != null)
+								db.Applications.Add(new Application()
+								{
+									UserId = user.UserId,
+									LatitudeFrom = msg.Location.Latitude,
+									LongitudeFrom = msg.Location.Longitude
+								});
+							db.SaveChanges();
+						}
 						if (application == null)
 						{
 							if (user != null)
 								db.Applications.Add(new Application()
 								{
 									UserId = user.UserId,
+									LatitudeFrom  = msg.Location.Latitude,
+									LongitudeFrom = msg.Location.Longitude
 								});
 							db.SaveChanges();
 						}
-
 						if (user != null)
 							user.State = StateChatEnum.EndAddress;
-
-						if (application != null)
-						{
-							application.LatitudeFrom = msg.Location.Latitude;
-							application.LongitudeFrom = msg.Location.Longitude;
-						}
 						db.SaveChanges();
 						break;
 					}
@@ -56,14 +66,15 @@ namespace TelegramBot.States
 							};
 							await bot.MakeRequestAsync(send);
 							var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
-							if (user != null)
-								user.State = StateChatEnum.StartMain;
+								if (user != null)
+									user.State = StateChatEnum.StartMain;
+							
 						}
 						else
 						{
 							await bot.SendTextMessageAsync(
 								chatId: msg.Chat.Id,
-								text: "Введенный текст не является вашим местоположением");
+								text: "Введенный текст не является вашим местоположением, для его определения нажмите на кнопку Далее.");
 						}
 						break;
 					}

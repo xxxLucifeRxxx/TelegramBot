@@ -28,11 +28,14 @@ namespace TelegramBot.States
 
 						var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 						var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
+
 						if (application != null)
 							application.NumbPhone = msg.Contact.PhoneNumber;
+						db.SaveChanges();
+
 						if (user != null)
 							user.State = StateChatEnum.PaymentMethod;
-
+						db.SaveChanges();
 						break;
 					}
 				default:

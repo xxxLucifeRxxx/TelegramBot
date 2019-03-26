@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity.Infrastructure;
 using System.Globalization;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -31,52 +32,8 @@ namespace TelegramBot
 
 		public MyBot(string token)
 		{
-			//_states = _db.Users.Select(s => new State
-			//{
-			//	ChatId = s.ChatId,
-			//	StateChatEnum = s.State
-			//})
-			//.ToList();
 			_bot = new TelegramBotClient(token);
 			_bot.OnMessage += Bot_OnMessageReceived;
-			//_bot.OnCallbackQuery += (sender, e) =>
-			//{
-			//	switch (e.CallbackQuery.Data)
-			//	{
-			//		case Globals.CallbackCashPayment:
-			//			{
-			//				Globals.Data = e.CallbackQuery.Id;
-
-			//				var state = _db.Users.Select(s => new State
-			//				{
-			//					ChatId = s.ChatId,
-			//					StateChatEnum = s.State
-			//				})
-			//					.FirstOrDefault(x => x.ChatId == e.CallbackQuery.Message.Chat.Id);
-			//				if (state != null)
-			//					state.StateChatEnum = StateChatEnum.CarSearch;
-			//				// ReSharper disable once ObjectCreationAsStatement
-			//				new Fsm(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message, _bot, _db);
-			//				break;
-			//			}
-			//		case Globals.CallbackMobileBank:
-			//			{
-			//				Globals.Data = e.CallbackQuery.Id;
-
-			//				var state = _db.Users.Select(s => new State
-			//				{
-			//					ChatId = s.ChatId,
-			//					StateChatEnum = s.State
-			//				})
-			//					.FirstOrDefault(x => x.ChatId == e.CallbackQuery.Message.Chat.Id);
-			//				if (state != null)
-			//					state.StateChatEnum = StateChatEnum.CarSearch;
-			//				// ReSharper disable once ObjectCreationAsStatement
-			//				new Fsm(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message, _bot, _db);
-			//				break;
-			//			}
-			//	}
-			//};
 			var me = _bot.GetMeAsync().Result;
 			Console.WriteLine("I'm alive " + me.FirstName);
 		}

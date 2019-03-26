@@ -24,6 +24,7 @@ namespace TelegramBot.States
 				var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 				if (user != null)
 					user.State = StateChatEnum.StartMain;
+				db.SaveChanges();
 			}
 			else
 			{
@@ -40,6 +41,7 @@ namespace TelegramBot.States
 						application.State = ClaimStatusEnum.Searching;
 						application.Created = DateTime.Now;
 						application.PaymentMethod = PaymentMethodEnum.MobileBank;
+						db.SaveChanges();
 					}
 
 					if (user != null)

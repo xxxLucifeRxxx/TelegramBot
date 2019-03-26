@@ -16,16 +16,17 @@ namespace TelegramBot.States
 		{
 			switch (msg.Type)
 			{
-				case MessageType.Venue | MessageType.Location:
+				case MessageType.Venue:
+					case MessageType.Location:
 					{
 						await bot.SendTextMessageAsync(chatId,
 							text: "Теперь назначьте пожалуйста время на которое желаете заказать такси. \n " +
-								  "Формат для отправки времени 'hh:mm \n" +
-								  "Где hh-часы, mm-минуты'" +
-								  "Если хотите сделать заказ на сейчас, то нажмите далее",
+								  "Формат для отправки времени 'hh:mm, \n" +
+								  "где hh-часы, mm-минуты. '" +
+								  "Если хотите сделать заказ на ближайшее время, то нажмите далее",
 							replyMarkup: new ReplyKeyboardMarkup(new[]
 							{
-							KeyboardButton.WithRequestLocation("Далее"),
+							new KeyboardButton("Далее"),
 							new KeyboardButton("Отмена"),
 							}, true, true));
 
@@ -66,7 +67,6 @@ namespace TelegramBot.States
 									text: "Отправленное вами сообщение не является адресом");
 							}
 						}
-
 						break;
 					}
 			}

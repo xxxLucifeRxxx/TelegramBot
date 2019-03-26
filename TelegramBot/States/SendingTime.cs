@@ -17,14 +17,22 @@ namespace TelegramBot.States
 			{
 				var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 				var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
+
 				if (application != null)
 					if (user != null)
 					{
 						application.Time = DateTime.Parse(msg.Text);
 						user.State = StateChatEnum.SendingNumberPhone;
 					}
+
 				await bot.SendTextMessageAsync(chatId,
-				$"{msg.Text} отправлено");
+				$"Время{msg.Text} будет указано в заявке \n" +
+				$"Теперь нажав на кнопку далее рарешите отправку вашего номера," +
+				$"он будет указан в заявке для связи водителя с вами",
+				replyMarkup: new ReplyKeyboardMarkup(new[]
+				{
+					KeyboardButton.WithRequestContact("Далее")
+				}, true, true));
 				db.SaveChanges();
 			}
 			else
@@ -37,8 +45,8 @@ namespace TelegramBot.States
 						ReplyMarkup = new ReplyKeyboardRemove(),
 					};
 					await bot.MakeRequestAsync(send);
-
 					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
+
 					if (user != null)
 						user.State = StateChatEnum.StartMain;
 				}
@@ -46,8 +54,8 @@ namespace TelegramBot.States
 				{
 					await bot.SendTextMessageAsync(
 						msg.Chat.Id,
-						text: "Текущее время отправлено \n" +
-							  "Теперь укажите пожалуйста ваш номер телефона." +
+						text: "Текущее время отправлено. \n" +
+							  "Теперь укажите пожалуйста ваш номер телефона. " +
 							  "Для этого нажмите Далее и во всплывающем окне разрешите отправку вашего номера",
 						replyMarkup: new ReplyKeyboardMarkup(new[]
 						{
@@ -56,6 +64,7 @@ namespace TelegramBot.States
 
 					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 					var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
+
 					if (application != null)
 						if (user != null)
 							user.State = StateChatEnum.SendingNumberPhone;

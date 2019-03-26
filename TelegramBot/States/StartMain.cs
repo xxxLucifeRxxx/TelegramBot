@@ -21,8 +21,8 @@ namespace TelegramBot.States
 							chatId: msg.Chat.Id,
 							text: "`Здравствуйте, откуда вас забрать? \n" +
 								  "Для определения вашего местонахождения " +
-								  "в настройках телефона включите` *геолокацию,* \n" +
-								  "и нажмите на Далее",
+								  "в настройках телефона включите` *геолокацию* \n" +
+								  "и нажмите на кнопку Далее.",
 							replyMarkup: new ReplyKeyboardMarkup(new[]
 							{
 								KeyboardButton.WithRequestLocation("Далее"),
