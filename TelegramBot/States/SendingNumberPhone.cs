@@ -24,6 +24,7 @@ namespace TelegramBot.States
 							{
 							new KeyboardButton("Наличные"),
 							new KeyboardButton("Мобильный банк"),
+							new KeyboardButton("Отмена")
 							}, true, true));
 
 						var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
@@ -50,8 +51,11 @@ namespace TelegramBot.States
 							await bot.MakeRequestAsync(send);
 
 							var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
+							var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
+							db.Applications.Remove(application ?? throw new InvalidOperationException());
 							if (user != null)
 								user.State = StateChatEnum.StartMain;
+							db.SaveChanges();
 						}
 						else
 						{

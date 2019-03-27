@@ -21,8 +21,8 @@ namespace TelegramBot.States
 					{
 						await bot.SendTextMessageAsync(chatId,
 							text: "Теперь назначьте пожалуйста время на которое желаете заказать такси. \n " +
-								  "Формат для отправки времени 'hh:mm, \n" +
-								  "где hh-часы, mm-минуты. '" +
+								  "Формат для отправки времени 'hh:mm', \n" +
+								  "где hh-часы, mm-минуты. " +
 								  "Если хотите сделать заказ на ближайшее время, то нажмите далее",
 							replyMarkup: new ReplyKeyboardMarkup(new[]
 							{
@@ -57,8 +57,11 @@ namespace TelegramBot.States
 								};
 								await bot.MakeRequestAsync(send);
 								var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
+								var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
+								db.Applications.Remove(application ?? throw new InvalidOperationException());
 								if (user != null)
 									user.State = StateChatEnum.StartMain;
+								db.SaveChanges();
 							}
 							else
 							{

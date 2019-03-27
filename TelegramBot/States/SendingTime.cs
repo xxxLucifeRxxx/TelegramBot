@@ -26,12 +26,13 @@ namespace TelegramBot.States
 					}
 
 				await bot.SendTextMessageAsync(chatId,
-				$"Время{msg.Text} будет указано в заявке \n" +
-				$"Теперь нажав на кнопку далее рарешите отправку вашего номера," +
+				$"Время {msg.Text} будет указано в заявке \n" +
+				$"Теперь нажав на кнопку далее разрешите отправку вашего номера," +
 				$"он будет указан в заявке для связи водителя с вами",
 				replyMarkup: new ReplyKeyboardMarkup(new[]
 				{
-					KeyboardButton.WithRequestContact("Далее")
+					KeyboardButton.WithRequestContact("Далее"),
+					new KeyboardButton("Отмена")
 				}, true, true));
 				db.SaveChanges();
 			}
@@ -46,9 +47,12 @@ namespace TelegramBot.States
 					};
 					await bot.MakeRequestAsync(send);
 					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
+					var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
+					db.Applications.Remove(application ?? throw new InvalidOperationException());
 
 					if (user != null)
 						user.State = StateChatEnum.StartMain;
+					db.SaveChanges();
 				}
 				else if (msg.Text.Equals("Далее", StringComparison.OrdinalIgnoreCase))
 				{
@@ -72,6 +76,12 @@ namespace TelegramBot.States
 					if (application != null)
 						application.Time = DateTime.Now;
 					db.SaveChanges();
+				}
+				else
+				{
+					await bot.SendTextMessageAsync(
+						msg.Chat.Id,
+						text: "Вы не правильно указали время");
 				}
 			}
 		}

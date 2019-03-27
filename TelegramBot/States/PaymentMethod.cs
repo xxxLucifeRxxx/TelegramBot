@@ -22,6 +22,8 @@ namespace TelegramBot.States
 				};
 				await bot.MakeRequestAsync(send);
 				var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
+				var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
+				db.Applications.Remove(application ?? throw new InvalidOperationException());
 				if (user != null)
 					user.State = StateChatEnum.StartMain;
 				db.SaveChanges();
@@ -32,7 +34,11 @@ namespace TelegramBot.States
 				{
 					await bot.SendTextMessageAsync(
 						chatId: msg.Chat.Id,
-						text: "Вы выбрали способ оплаты через мобильный банк");
+						text: "Вы выбрали способ оплаты через мобильный банк",
+						replyMarkup: new ReplyKeyboardMarkup(new[]
+						{
+							new KeyboardButton("Отмена")
+						}, true, true));
 
 					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 					var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
@@ -41,6 +47,7 @@ namespace TelegramBot.States
 						application.State = ClaimStatusEnum.Searching;
 						application.Created = DateTime.Now;
 						application.PaymentMethod = PaymentMethodEnum.MobileBank;
+						application.State = ClaimStatusEnum.Searching;
 						db.SaveChanges();
 					}
 
@@ -52,7 +59,11 @@ namespace TelegramBot.States
 				{
 					await bot.SendTextMessageAsync(
 						chatId: msg.Chat.Id,
-						text: "Вы выбрали способ оплаты наличными");
+						text: "Вы выбрали способ оплаты наличными",
+						replyMarkup: new ReplyKeyboardMarkup(new[]
+						{
+							new KeyboardButton("Отмена")
+						}, true, true));
 
 					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 					var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
@@ -61,6 +72,8 @@ namespace TelegramBot.States
 						application.State = ClaimStatusEnum.Searching;
 						application.Created = DateTime.Now;
 						application.PaymentMethod = PaymentMethodEnum.Cash;
+						application.State = ClaimStatusEnum.Searching;
+						db.SaveChanges();
 					}
 
 					if (user != null)
