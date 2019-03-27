@@ -18,17 +18,14 @@ namespace TelegramBot.States
 			{
 				var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 				var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
-
-				if (application != null)
-					if (user != null)
-					{
+				if (application != null && user != null)
+				{
 						application.Time = DateTime.Parse(msg.Text);
 						user.State = StateChatEnum.SendingNumberPhone;
-					}
-
+				}
 				await bot.SendTextMessageAsync(chatId,
 				$"Время {msg.Text} будет указано в заявке \n" +
-				$"Теперь нажав на кнопку далее разрешите отправку вашего номера," +
+				$"Теперь нажав на кнопку Далее разрешите отправку вашего номера," +
 				$"он будет указан в заявке для связи водителя с вами",
 				replyMarkup: new ReplyKeyboardMarkup(new[]
 				{
@@ -47,10 +44,10 @@ namespace TelegramBot.States
 						ReplyMarkup = new ReplyKeyboardRemove(),
 					};
 					await bot.MakeRequestAsync(send);
+
 					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 					var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
 					db.Applications.Remove(application ?? throw new InvalidOperationException());
-
 					if (user != null)
 						user.State = StateChatEnum.StartMain;
 					db.SaveChanges();
@@ -69,13 +66,12 @@ namespace TelegramBot.States
 
 					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 					var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
-
-					if (application != null)
-						if (user != null)
-							user.State = StateChatEnum.SendingNumberPhone;
-
-					if (application != null)
+					if (application != null && user != null)
+					{
+						user.State = StateChatEnum.SendingNumberPhone;
 						application.Time = DateTime.Now;
+					}
+
 					db.SaveChanges();
 				}
 				else

@@ -19,7 +19,7 @@ namespace TelegramBot.States
 				case MessageType.Contact:
 					{
 						await bot.SendTextMessageAsync(chatId,
-							"Теперь выберите пожалуйста способ оплаты",
+							"Теперь выберите пожалуйста способ оплаты, после выбора способа оплаты начнется поиск водителя.",
 							replyMarkup: new ReplyKeyboardMarkup(new[]
 							{
 							new KeyboardButton("Наличные"),
@@ -29,13 +29,11 @@ namespace TelegramBot.States
 
 						var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 						var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
-
-						if (application != null)
+						if (application != null && user != null)
+						{
 							application.NumbPhone = msg.Contact.PhoneNumber;
-						db.SaveChanges();
-
-						if (user != null)
 							user.State = StateChatEnum.PaymentMethod;
+						}
 						db.SaveChanges();
 						break;
 					}

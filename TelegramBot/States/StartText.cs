@@ -72,7 +72,6 @@ namespace TelegramBot.States
 							if (user != null)
 									user.State = StateChatEnum.StartMain;
 							db.SaveChanges();
-
 						}
 						else
 						{

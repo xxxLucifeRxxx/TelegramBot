@@ -21,6 +21,7 @@ namespace TelegramBot.States
 					ReplyMarkup = new ReplyKeyboardRemove(),
 				};
 				await bot.MakeRequestAsync(send);
+
 				var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 				var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
 				db.Applications.Remove(application ?? throw new InvalidOperationException());
@@ -34,7 +35,7 @@ namespace TelegramBot.States
 				{
 					await bot.SendTextMessageAsync(
 						chatId: msg.Chat.Id,
-						text: "Вы выбрали способ оплаты через мобильный банк",
+						text: "Вы выбрали способ оплаты через мобильный банк, идет поиск водителя...",
 						replyMarkup: new ReplyKeyboardMarkup(new[]
 						{
 							new KeyboardButton("Отмена")
@@ -42,24 +43,20 @@ namespace TelegramBot.States
 
 					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 					var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
-					if (application != null)
+					if (application != null && user != null)
 					{
 						application.State = ClaimStatusEnum.Searching;
 						application.Created = DateTime.Now;
 						application.PaymentMethod = PaymentMethodEnum.MobileBank;
-						application.State = ClaimStatusEnum.Searching;
-						db.SaveChanges();
-					}
-
-					if (user != null)
 						user.State = StateChatEnum.CarSearch;
+					}
 					db.SaveChanges();
 				}
 				else if (msg.Text.Equals("Наличные", StringComparison.OrdinalIgnoreCase))
 				{
 					await bot.SendTextMessageAsync(
 						chatId: msg.Chat.Id,
-						text: "Вы выбрали способ оплаты наличными",
+						text: "Вы выбрали способ оплаты наличными, идет поиск водителя...",
 						replyMarkup: new ReplyKeyboardMarkup(new[]
 						{
 							new KeyboardButton("Отмена")
@@ -67,17 +64,13 @@ namespace TelegramBot.States
 
 					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 					var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
-					if (application != null)
+					if (application != null && user != null)
 					{
 						application.State = ClaimStatusEnum.Searching;
 						application.Created = DateTime.Now;
 						application.PaymentMethod = PaymentMethodEnum.Cash;
-						application.State = ClaimStatusEnum.Searching;
-						db.SaveChanges();
-					}
-
-					if (user != null)
 						user.State = StateChatEnum.CarSearch;
+					}
 					db.SaveChanges();
 				}
 				else

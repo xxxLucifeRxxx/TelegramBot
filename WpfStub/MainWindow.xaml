@@ -1,12 +1,13 @@
-﻿<Window x:Class="WpfStub.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:WindowsPresentation="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation" x:Class="WpfStub.MainWindow"
         mc:Ignorable="d"
-        Title="Stub" Height="432.5" Width="575.1">
-   <DockPanel LastChildFill="True">
-       <DockPanel.Resources>
+        Title="Stub" Height="432.5" Width="801.648">
+    <Grid>
+        <Grid.Resources>
             <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="DarkGray" Offset="0" />
                 <GradientStop Color="#CCCCFF" Offset="0.5" />
@@ -18,42 +19,42 @@
                 <Setter Property="Margin" Value="10" />
             </Style>
             <Style x:Key="ListStyle"
-                  TargetType="ListBox">
-               <Setter Property="TextBlock.Text" Value="{Binding}" />
-               <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-               <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-               <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
-               <Setter Property="Background" Value="LightSteelBlue" />
-               <Style.Resources>
-                   <Style TargetType="Border">
-                       <Setter Property="CornerRadius" Value="10" />
-                   </Style>
-                   <Style TargetType="TextBlock">
-                       <Setter Property="Text" Value="{Binding}" />
-                       <Setter Property="TextWrapping" Value="Wrap" />
-                   </Style>
-               </Style.Resources>
-           </Style>
-           <Style x:Key="ItemStyle"
+                  TargetType="{x:Type ListBox}">
+                <Style.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="10" />
+                    </Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Text" Value="{Binding}" />
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                    </Style>
+                </Style.Resources>
+                <Setter Property="TextBlock.Text" Value="{Binding}" />
+                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+                <Setter Property="Background" Value="LightSteelBlue" />
+            </Style>
+            <Style x:Key="ItemStyle"
                   TargetType="{x:Type ListBoxItem}">
-               <Setter Property="Background" Value="Snow" />
-               <Setter Property="FontStyle" Value="Normal" />
-               <Setter Property="FontFamily" Value="Helvetica" />
-               <Setter Property="FontSize" Value="14" />
-               <Style.Resources>
-                   <Style TargetType="Border">
-                       <Setter Property="CornerRadius" Value="6" />
-                       <Setter Property="Margin" Value="5" />
-                       <Setter Property="Padding" Value="15" />
-                   </Style>
-               </Style.Resources>
-           </Style>
-       </DockPanel.Resources>
-       <StackPanel DockPanel.Dock="Right">
-           <Button Content="Взять заказ" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="169" Click="Button_Click"/>
-           <Button x:Name="StartButton" Click="Start_OnClick" Content="Начать отслеживание заявок" HorizontalAlignment="Right" Width="169"  />
-           <Button x:Name="StopButton" Click="Stop_OnClick" Content="Остановить отслеживание"  Width="Auto" />
-       </StackPanel>
-       <ListBox DockPanel.Dock="Left" Style="{StaticResource ListStyle}"  ItemContainerStyle="{StaticResource ItemStyle}" x:Name="ListBoxMain" ItemsSource="{Binding Components, Mode=OneWay}" HorizontalAlignment="Left" Width="280" SelectionChanged="ListBox_SelectionChanged"/>
-   </DockPanel>
+                <Style.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="6" />
+                        <Setter Property="Margin" Value="5" />
+                        <Setter Property="Padding" Value="15" />
+                    </Style>
+                </Style.Resources>
+                <Setter Property="Background" Value="Snow" />
+                <Setter Property="FontStyle" Value="Normal" />
+                <Setter Property="FontFamily" Value="Helvetica" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+        </Grid.Resources>
+        <Button x:Name="StartButton" Click="Start_OnClick" Content="Начать отслеживание заявок" HorizontalAlignment="Right" Width="165" Margin="0,10,170,371"  />
+        <Button x:Name="StopButton" Click="Stop_OnClick" Content="Остановить отслеживание"  Width="Auto" Margin="627,10,10,371" />
+        <Button Content="Взять заказ" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="169" Click="Button_Click" Margin="285,10,0,0"/>
+        <ListBox DockPanel.Dock="Left" Style="{StaticResource ListStyle}"  ItemContainerStyle="{StaticResource ItemStyle}" x:Name="ListBoxMain" ItemsSource="{Binding Components, Mode=OneWay}" HorizontalAlignment="Left" Width="280" SelectionChanged="ListBox_SelectionChanged"/>
+    </Grid>
+
+
 </Window>

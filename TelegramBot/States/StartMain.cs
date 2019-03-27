@@ -22,10 +22,10 @@ namespace TelegramBot.States
 							text: "`Здравствуйте, откуда вас забрать? \n" +
 								  "Для определения вашего местонахождения " +
 								  "в настройках телефона включите` *геолокацию* \n" +
-								  "и нажмите на кнопку Далее.",
+								  "и нажмите на кнопку Местоположение.",
 							replyMarkup: new ReplyKeyboardMarkup(new[]
 							{
-								KeyboardButton.WithRequestLocation("Далее"),
+								KeyboardButton.WithRequestLocation("Местоположение"),
 								new KeyboardButton("Отмена"),
 							}, true, true),
 							parseMode: ParseMode.Markdown);

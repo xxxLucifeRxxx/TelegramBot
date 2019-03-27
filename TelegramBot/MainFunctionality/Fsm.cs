@@ -75,6 +75,10 @@ namespace TelegramBot.MainFunctionality
 						updateState = new PaymentMethod();
 						break;
 
+					case StateChatEnum.CarSearch:
+						updateState = new CarSearch();
+						break;
+
 					//case StateChatEnum.CarSearch:
 					//	updateState = new CarSearch();
 					//	break;

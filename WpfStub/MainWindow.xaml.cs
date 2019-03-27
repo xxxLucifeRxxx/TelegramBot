@@ -70,5 +70,11 @@ namespace WpfStub
 		{
 
 		}
+
+
+		private void MapView_OnLoaded(object sender, RoutedEventArgs e)
+		{
+			throw new System.NotImplementedException();
+		}
 	}
 }

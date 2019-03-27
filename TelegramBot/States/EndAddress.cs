@@ -23,7 +23,7 @@ namespace TelegramBot.States
 							text: "Теперь назначьте пожалуйста время на которое желаете заказать такси. \n " +
 								  "Формат для отправки времени 'hh:mm', \n" +
 								  "где hh-часы, mm-минуты. " +
-								  "Если хотите сделать заказ на ближайшее время, то нажмите далее",
+								  "Если хотите сделать заказ на ближайшее время, то нажмите Далее",
 							replyMarkup: new ReplyKeyboardMarkup(new[]
 							{
 							new KeyboardButton("Далее"),
@@ -32,14 +32,11 @@ namespace TelegramBot.States
 
 						var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
 						var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
-						if (application != null)
-							if (user != null)
-								user.State = StateChatEnum.SendingTime;
-
-						if (application != null)
+						if (application != null && user != null)
 						{
-							application.LatitudeTo = msg.Location.Latitude;
-							application.LongitudeTo = msg.Location.Longitude;
+								user.State = StateChatEnum.SendingTime;
+								application.LatitudeTo = msg.Location.Latitude;
+								application.LongitudeTo = msg.Location.Longitude;
 						}
 						db.SaveChanges();
 						break;
