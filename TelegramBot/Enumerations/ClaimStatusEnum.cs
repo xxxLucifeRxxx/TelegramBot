@@ -2,7 +2,7 @@
 {
 	public enum ClaimStatusEnum
 	{
-		Searching,
+		Searching = 1,
 		Accepted,
 		Canceled
 	}

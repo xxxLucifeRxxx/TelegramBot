@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Data.Entity.Infrastructure;
 using System.Globalization;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using TelegramBot.Model;
 
-namespace TelegramBot
+namespace TelegramBot.MainFunctionality
 {
 	internal static class Globals
 	{

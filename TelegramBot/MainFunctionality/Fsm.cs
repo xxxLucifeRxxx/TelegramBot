@@ -7,7 +7,7 @@ using TelegramBot.States;
 using Context = TelegramBot.Model.Context;
 using User = TelegramBot.Model.User;
 
-namespace TelegramBot
+namespace TelegramBot.MainFunctionality
 {
 	public class Fsm
 	{

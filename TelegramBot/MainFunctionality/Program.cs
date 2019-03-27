@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TelegramBot
+namespace TelegramBot.MainFunctionality
 {
 	public class Program
 	{

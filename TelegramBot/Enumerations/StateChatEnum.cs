@@ -2,7 +2,7 @@
 {
 	public enum StateChatEnum
 	{
-		StartMain,
+		StartMain = 1,
 		StartText,
 		EndAddress,
 		SendingTime,
