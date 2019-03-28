@@ -24,10 +24,18 @@ namespace WpfStub
 				Dispatcher.Invoke(() =>
 				{
 					ListBoxMain.Items.Clear();
-					foreach (var item in GetData())
+					var list = GetData();
+					foreach (var item in list)
 					{
 						ListBoxMain.Items.Add(item);
 					}
+
+					var last = list.LastOrDefault();
+					if (last?.LatFrom != null && last.LonFrom.HasValue)
+						mapView.Position = new PointLatLng(last.LatFrom.Value, last.LonFrom.Value);
+
+					if (last?.LatTo != null && last.LonTo.HasValue)
+						mapView2.Position = new PointLatLng(last.LatTo.Value, last.LonTo.Value);
 				});
 			};
 
@@ -55,12 +63,7 @@ namespace WpfStub
 				});
 			}
 
-			var last = list.LastOrDefault();
-			if (last?.LatFrom != null && last.LonFrom.HasValue)
-				mapView.Position = new PointLatLng(last.LatFrom.Value, last.LonFrom.Value);
-
-			if (last?.LatTo != null && last.LonTo.HasValue)
-				mapView2.Position = new PointLatLng(last.LatTo.Value, last.LonTo.Value);
+		
 
 			return list;
 		}
@@ -127,7 +130,7 @@ namespace WpfStub
 
 		private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
 		{
-			GMap.NET.GMaps.Instance.Mode = GMap.NET.AccessMode.ServerAndCache;
+			GMaps.Instance.Mode = GMap.NET.AccessMode.ServerAndCache;
 			// choose your provider here
 			mapView.MapProvider = GMap.NET.MapProviders.OpenStreetMapProvider.Instance;
 			mapView.MinZoom = 2;
@@ -138,7 +141,7 @@ namespace WpfStub
 			mapView.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
 			// lets the user drag the map
 			mapView.CanDragMap = true;
-			mapView.Position = new PointLatLng(51.828117, 107.588516);
+			mapView.Position = new PointLatLng(42.161904, -26.023755);
 			// lets the user drag the map with the left mouse button
 			mapView.DragButton = MouseButton.Left;
 
@@ -155,7 +158,7 @@ namespace WpfStub
 			mapView2.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
 			// lets the user drag the map
 			mapView2.CanDragMap = true;
-			mapView2.Position = new PointLatLng(51.828117, 107.588516);
+			mapView2.Position = new PointLatLng(42.161904, -26.023755);
 			// lets the user drag the map with the left mouse button
 			mapView2.DragButton = MouseButton.Left;
 		}

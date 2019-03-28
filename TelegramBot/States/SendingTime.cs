@@ -61,7 +61,8 @@ namespace TelegramBot.States
 							  "Для этого нажмите Далее и во всплывающем окне разрешите отправку вашего номера",
 						replyMarkup: new ReplyKeyboardMarkup(new[]
 						{
-							KeyboardButton.WithRequestContact("Далее")
+							KeyboardButton.WithRequestContact("Далее"),
+							KeyboardButton.WithRequestContact("Отмена")
 						}, true, true));
 
 					var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
