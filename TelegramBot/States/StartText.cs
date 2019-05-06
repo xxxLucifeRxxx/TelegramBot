@@ -60,21 +60,21 @@ namespace TelegramBot.States
 					{
 						if (msg.Text.Equals("Отмена", StringComparison.OrdinalIgnoreCase))
 						{
-							await bot.SendTextMessageAsync(
-								chatId: msg.Chat.Id,
-								text: "Нажав на иконку прикрепить, она в виде скрепки, выберите пункт геопозиция и выберите место куда вам нужно ехать.",
-								replyMarkup: new ReplyKeyboardMarkup(new[]
-								{
-									new KeyboardButton("Далее")
-								}, true, true));
-							var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
-							var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
-							if (application != null)
-								db.Applications.Remove(application);
-							if (user != null)
-								user.State = StateChatEnum.StartMain;
-							db.SaveChanges();
-						}
+                            var send = new SendMessageRequest(msg.Chat.Id,
+                                "Вы отменили заказ")
+                            {
+                                ReplyMarkup = new ReplyKeyboardRemove(),
+                            };
+                            await bot.MakeRequestAsync(send);
+
+                            var user = db.Users.FirstOrDefault(x => x.ChatId == msg.Chat.Id);
+                            var application = db.Applications.FirstOrDefault(x => x.UserId == user.UserId);
+                            if (application != null)
+                                db.Applications.Remove(application);
+                            if (user != null)
+                                user.State = StateChatEnum.StartMain;
+                            db.SaveChanges();
+                        }
 						else
 						{
 							await bot.SendTextMessageAsync(
